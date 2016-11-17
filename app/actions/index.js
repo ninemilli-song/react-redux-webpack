@@ -2,11 +2,12 @@
  * Created by songxg on 16/4/13.
  */
 
-import { HAHA_ITEM } from '../constants/actionsTypes';
+import { SET_PAGE_NAME } from '../constants/actionsTypes';
+import menuList from '../constants/menuList'
 
-export function haha(text) {
+export function setPage (pageName = menuList[0]) {
     return {
-        type: HAHA_ITEM,
-        text
+        type: SET_PAGE_NAME,
+        pageName
     }
 }

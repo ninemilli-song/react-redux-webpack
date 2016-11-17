@@ -6,11 +6,13 @@ var path = require('path');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 module.exports = {
-    entry: getEntrySources('./app/main.js'),
+    entry: getEntrySources(),
     output: {
         path: process.env.NODE_ENV == 'production' ? __dirname + '/release/js' : __dirname,
-        publicPath: '',
-        filename: 'bundle.js'
+        publicPath: '/',
+        //filename: __dirname + 'bundle.js'
+        filename: '[name].bundle.js',
+        chunkFilename: '[name].chunk.js'
     },
     module: {
         preLoaders: [
@@ -27,11 +29,12 @@ module.exports = {
             },
             {
                 test: /\.jsx?$/,
-                //must us path.jon(), or throw error like this: Uncaught TypeError: Cannot read property 'NODE_ENV' of undefined
+                //must use path.jon(), or throw error like this: Uncaught TypeError: Cannot read property 'NODE_ENV' of undefined
                 exclude: path.join(__dirname, '/node_modules'),
                 loaders: [
                     'react-hot',
-                    'babel?presets[]=react,presets[]=es2015'
+                    //'babel?presets[]=react,presets[]=es2015'
+                    'babel?presets[]=react,presets[]=es2015,presets[]=stage-0'
                 ]
             },
             {
@@ -54,18 +57,24 @@ function getEntrySources(sources) {
     if (process.env.NODE_ENV == 'production') {
         //webpack code splitting
         return {
-            app: sources,
+            app: ['./app/main.js'],
+            register: ['app/register'],
             vendor: ['react', 'react-dom', 'react-redux']
         };
     }
     else {
-        var list = [];
-        list.push(sources);
-        //hot loader
-        list.push('webpack-dev-server/client?http://127.0.0.1:3001');
-        list.push('webpack/hot/only-dev-server');
-
-        return list;
+        return {
+            app: [
+                'webpack-dev-server/client?http://127.0.0.1:3001',
+                'webpack/hot/only-dev-server',
+                './app/main.js'
+            ],
+            register: [
+                'webpack-dev-server/client?http://127.0.0.1:3001',
+                'webpack/hot/only-dev-server',
+                './app/register.js'
+            ]
+        }
     }
 }
 
@@ -92,6 +101,7 @@ function getPluginsSource() {
         return [
             new webpack.HotModuleReplacementPlugin(),   //hot loader plugin
             new webpack.NoErrorsPlugin(),
+
         ];
     }
 }
