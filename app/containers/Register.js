@@ -4,53 +4,74 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { connect } from 'react-redux';
+import Pager from '../components/Pager';
 import { bindActionCreators } from 'redux';
-import { Col, Form, FormGroup, FormControl, Button, ControlLabel, Checkbox } from 'react-bootstrap';
 import * as Actions from '../actions/register';
+
+import { Row, Col } from 'antd/lib/layout';
+import 'antd/lib/layout/style';
+
+import Input from 'antd/lib/input';
+import 'antd/lib/input/style';
+
+import Checkbox from 'antd/lib/checkbox';
+import 'antd/lib/checkbox/style';
+
+import Button from 'antd/lib/button';
+import 'antd/lib/button/style';
+
+import './style/register.less';
+
+import SplitBar from '../components/SplitBar';
 
 class Register extends React.Component {
     render () {
         console.log('Register render', this.props);
         console.log('Register params id: ', this.props.params.id);
-        const { state } = this.props;
+        const { state, prefixCls } = this.props;
         return (
-            <div>
-                <Form horizontal>
-                    <FormGroup controlId="formHorizontalEmail" validationState={ state.mobile.vState ? 'success' : 'error'}>
-                        <Col componentClass={ControlLabel} sm={2}>
-                            mobile
+            <Pager className={ `${prefixCls}` }>
+                <div className='page-title'>登录/注册</div>
+                <div className='page-content'>
+                    <Row gutter={ 16 }>
+                        <Col span={ 3 }>
+                            <div className={ `text-right ${prefixCls}-label` }>
+                                mobile
+                            </div>
                         </Col>
-                        <Col sm={10}>
-                            <FormControl type="mobile" placeholder="Mobile" ref="mobile" onChange={ this.handleMobileInput.bind(this) } />
-                            <ControlLabel>{ state.mobile.vState ? '' : state.mobile.errMsg }</ControlLabel>
+                        <Col span={ 10 }>
+                            <Input type="mobile" placeholder="Mobile" ref="mobile" onChange={ this.handleMobileInput.bind(this) } />
                         </Col>
-                    </FormGroup>
-
-                    <FormGroup controlId="formHorizontalPassword" validationState={ state.password.vState ? 'success' : 'error'}>
-                        <Col componentClass={ControlLabel} sm={2}>
-                            Password
+                    </Row>
+                    <SplitBar />
+                    <Row gutter={ 16 }>
+                        <Col span={ 3 }>
+                            <div className={ `text-right ${prefixCls}-label` }>
+                                Password
+                            </div>
                         </Col>
-                        <Col sm={10}>
-                            <FormControl type="password" placeholder="Password" ref="password" onChange={ this.handlePwdInput.bind(this) } />
-                            <ControlLabel>{ state.password.vState ? '' : state.password.errMsg }</ControlLabel>
+                        <Col span={ 10 }>
+                            <Input type="password" placeholder="Password" ref="password" onChange={ this.handlePwdInput.bind(this) } />
                         </Col>
-                    </FormGroup>
-
-                    <FormGroup>
-                        <Col smOffset={2} sm={10}>
+                    </Row>
+                    <SplitBar />
+                    <Row gutter={ 16 }>
+                        <Col span={ 3 }></Col>
+                        <Col span={ 10 }>
                             <Checkbox>Remember me</Checkbox>
                         </Col>
-                    </FormGroup>
-
-                    <FormGroup>
-                        <Col smOffset={2} sm={10}>
-                            <Button type="button" onClick={ this.signIn.bind(this) }>
+                    </Row>
+                    <SplitBar />
+                    <Row gutter={ 16 }>
+                        <Col span={ 3 }></Col>
+                        <Col span={ 10 }>
+                            <Button onClick={ this.signIn.bind(this) }>
                                 Sign in
                             </Button>
                         </Col>
-                    </FormGroup>
-                </Form>
-            </div>
+                    </Row>
+                </div>
+            </Pager>
         );
     }
 
@@ -72,6 +93,10 @@ class Register extends React.Component {
         const password = ReactDOM.findDOMNode(this.refs.password).value;
         this.props.actions.validatePwd(password);
     }
+}
+
+Register.defaultProps = {
+    prefixCls: 'register'
 }
 
 export default connect(state => ({
