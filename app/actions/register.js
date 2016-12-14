@@ -1,8 +1,8 @@
 /**
  * Created by songxg on 16/7/10.
  */
-import { REGISTER_EMAIL, REGISTER_PASSWORD, REGISTER_PHONE } from '../constants/actionsTypes'
-import { validatePassword, validatePhone } from '../utils/form'
+import { REGISTER_EMAIL, REGISTER_PASSWORD, REGISTER_PHONE, REGISTER_USERNAME } from '../constants/actionsTypes'
+import { validatePassword, validatePhone, validateText } from '../utils/form'
 
 let validateData = {
     status: 'ok',
@@ -19,6 +19,14 @@ function validateForm(type, value) {
     const emailReg = /^[A-Za-zd]+([-_.][A-Za-zd]+)*@([A-Za-zd]+[-.])+[A-Za-zd]{2,5}$/;
     const pwdReg = /^(w){6,20}$/;
     switch(type) {
+        case 'userName':
+            if (!validateUserName(value)) {
+                return Object.assign({}, validateData, {
+                    status: 'error',
+                    message: 'the input userName\'s format is incorrect'
+                });
+            }
+            return Object.assign({}, validateData);
         case 'phone':
             if (!validatePhone(value)) {
                 return Object.assign({}, validateData, {
@@ -66,6 +74,30 @@ function validateForm(type, value) {
             }
         default :
             return validateData;
+    }
+}
+
+export function validateUserName (value) {
+    const vd = validateForm('userName', value);
+    if (vd.status == 'ok') {
+        return {
+            type: REGISTER_USERNAME,
+            data: {
+                value: value,
+                vState: true,
+                errMsg: ''
+            }
+        }
+    }
+    else {
+        return {
+            type: REGISTER_USERNAME,
+            data: {
+                value: value,
+                vState: false,
+                errMsg: vd.message
+            }
+        }
     }
 }
 

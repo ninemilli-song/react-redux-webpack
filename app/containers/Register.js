@@ -36,6 +36,17 @@ class Register extends React.Component {
                     <Row gutter={ 16 }>
                         <Col span={ 3 }>
                             <div className={ `text-right ${prefixCls}-label` }>
+                                username
+                            </div>
+                        </Col>
+                        <Col span={ 10 }>
+                            <Input type="text" placeholder="输入您想要设置的用户名" ref="userName" onChange={ this.handleUserNameInput.bind(this) } />
+                        </Col>
+                    </Row>
+                    <SplitBar />
+                    <Row gutter={ 16 }>
+                        <Col span={ 3 }>
+                            <div className={ `text-right ${prefixCls}-label` }>
                                 mobile
                             </div>
                         </Col>
@@ -82,6 +93,11 @@ class Register extends React.Component {
         if (state.mobile.vState && state.password.vState) {
             //actions.signIn();
         }
+    }
+
+    handleUserNameInput () {
+        const userName = ReactDOM.findDOMNode(this.refs.userName).value;
+        this.props.actions.validateUserName(userName);
     }
 
     handleMobileInput () {

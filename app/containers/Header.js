@@ -7,18 +7,15 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as Actions from '../actions/header';
 import '../css/header.less';
-//import PubSub from 'pubsub-js';
-//import DropdownCom from '../components/DropdownCom';
 import menuType from '../constants/menuTypes';
 import subMenus from '../constants/subMenuList';
 import { browserHistory } from 'react-router';
-//import { Menu, Dropdown, Icon } from 'antd';
-import Menu from 'antd/lib/menu';
-import 'antd/lib/menu/style';
-import Dropdown from 'antd/lib/dropdown';
-import 'antd/lib/dropdown/style';
-import Icon from 'antd/lib/icon';
-import 'antd/lib/icon/style';
+import Dropdown from 'v7ui/lib/dropdown';
+import 'v7ui/lib/dropdown/style';
+import Icon from 'v7ui/lib/icon';
+import 'v7ui/lib/icon/style';
+import Menu from 'v7ui/lib/menu';
+import 'v7ui/lib/menu/style';
 
 class Header extends React.Component {
 
@@ -36,14 +33,13 @@ class Header extends React.Component {
                 <div className='nav-banner clearfix'>
                     <a className='logo'></a>
                     <div className='nav-bar'>
-                        <ul className='pull-left list-inline' onClick={ this.clickHandler.bind(this) }>
+                        <Menu onClick={ this.clickHandler.bind(this) } mode='horizontal' selectedKeys={ [menuKey] }>
                             {
                                 menuType.map(function (item, index) {
-                                    let className = menuKey == item.id ? 'nav-menu nav-menu-selected' : 'nav-menu';
-                                    return <li className={ className } data-nav-key={ item.id } key={ index } >{ item.text }</li>
+                                    return <Menu.Item key={ item.id }>{ item.text }</Menu.Item>
                                 })
                             }
-                        </ul>
+                        </Menu>
                         <ul className='user-contact pull-right list-inline'>
                             <li className='item'>
                             </li>
@@ -64,14 +60,15 @@ class Header extends React.Component {
                     </div>
                 </div>
                 <div className='nav-sub-menu'>
-                    <ul className='list-inline' onClick={ this.subMenuClick.bind(this) }>
+                    <Menu className='list-inline' onClick={ this.subMenuClick.bind(this) } mode='horizontal' selectedKeys={ [subKey] }>
                         {
                             subMenus[menuKey].map(function (item, index) {
                                 let className = subKey == item.id ? 'nav-submenu nav-submenu-selected' : 'nav-submenu';
-                                return <li className={ className } data-nav-key={ item.id } key={ index } >{ item.text }</li>
+                                return <Menu.Item key={ item.id } >{ item.text }</Menu.Item>
+//                                return <li className={ className } data-nav-key={ item.id } key={ index } >{ item.text }</li>
                             })
                         }
-                    </ul>
+                    </Menu>
                 </div>
             </div>
         );
@@ -94,25 +91,15 @@ class Header extends React.Component {
         this.setPage(page, subMenu);
     }
 
-    handlerSelect (selectedKey) {
-        //const actions = this.props.actions;
-        //actions.switchMenu(selectedKey);
-
-        //PubSub.publish('MENU_CHANGED', selectedKey);
-
-        browserHistory.push(`/${selectedKey}`);
-    }
-
     /**
      * 主菜单点击事件
      * @param e
      */
-    clickHandler (e) {
-        console.log('clickHandler: ', e.target.getAttribute('data-nav-key'));
-        const selectedKey = e.target.getAttribute('data-nav-key');
+    clickHandler (arg) {
+        const key = arg.key;
 
-        if (selectedKey) {
-            browserHistory.push(`/${selectedKey}`);
+        if (key) {
+            browserHistory.push(`/${key}`);
         }
     }
 
@@ -127,11 +114,11 @@ class Header extends React.Component {
      * 子菜单点击事件
      * @param e
      */
-    subMenuClick (e) {
-        let { menuKey } = this.props.state;
-        const selectedKey = e.target.getAttribute('data-nav-key');
+    subMenuClick (arg) {
+        const { menuKey } = this.props.state;
+        const key = arg.key;
 
-        browserHistory.push(`/${menuKey}/${selectedKey}`);
+        browserHistory.push(`/${menuKey}/${key}`);
     }
 
     setPage (page, subPage) {

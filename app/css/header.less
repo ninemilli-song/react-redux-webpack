@@ -45,11 +45,20 @@
     line-height: 60px;
     margin-left: 150px;
 
-    .nav-menu {
-      display: inline;
+    .ant-menu {
+      display: inline-block;
       padding: 0;
       margin: 0 10px;
       cursor: pointer;
+      background: transparent;
+      border: 0;
+      color: #ffffff;
+
+      .ant-menu-item-selected, .ant-menu-item-active, .ant-menu-item {
+        border: 0;
+      }
+
+
     }
 
     .nav-menu-selected {
@@ -60,14 +69,19 @@
 
 .nav-sub-menu {
   background-color: @gray-lighter;
-  .nav-submenu {
-    height: 30px;
-    line-height: 30px;
-    margin: 0 10px;
+  .ant-menu {
+    //height: 30px;
+    //margin: 0 10px;
     cursor: pointer;
+    background-color: transparent;
 
-    &:hover {
-      color: @theme-color-base;
+    .ant-menu-item {
+      height: 30px;
+      line-height: 30px;
+
+      &:hover {
+        color: @theme-color-base;
+      }
     }
   }
 

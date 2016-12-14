@@ -7,13 +7,7 @@ var ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 module.exports = {
     entry: getEntrySources(),
-    output: {
-        path: process.env.NODE_ENV == 'production' ? __dirname + '/release/js' : __dirname,
-        publicPath: '/',
-        //filename: __dirname + 'bundle.js'
-        filename: '[name].bundle.js',
-        chunkFilename: '[name].chunk.js'
-    },
+    output: getOutputConfig(),
     module: {
         preLoaders: [
             {
@@ -50,6 +44,28 @@ module.exports = {
         ]
     },
     plugins: getPluginsSource()
+}
+
+// Defined output config
+function getOutputConfig () {
+    if (process.env.NODE_ENV == 'production') {
+        // Production environment
+        return {
+            path: __dirname + '/release/js',
+            publicPath: 'http://my.cdn.com/',
+            filename: '[name].bundle.js',
+            chunkFilename: '[name].chunk.js'
+        }
+    }
+    else {
+        // Development environment
+        return {
+            path: __dirname,
+            publicPath: 'http://localhost:3001/',
+            filename: '[name].bundle.js',
+            chunkFilename: '[name].chunk.js'
+        }
+    }
 }
 
 //定义生产环境、开发环境的配置

@@ -41,3 +41,19 @@ export function validatePhone(phone) {
     }
     return true;
 }
+
+/**
+ * Summary:
+ *  validate userName
+ * @param userName
+ * @returns {boolean}
+ */
+export function validateUserName(text) {
+    text = text.trim();
+    if (!text) {
+        return false;
+    }
+    else {
+        return true;
+    }
+}

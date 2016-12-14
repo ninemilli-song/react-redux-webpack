@@ -1,9 +1,15 @@
 /**
  * Created by songxg on 16/7/10.
  */
-import { REGISTER_EMAIL, REGISTER_PASSWORD, REGISTER_PHONE } from '../constants/actionsTypes'
+import { REGISTER_EMAIL, REGISTER_PASSWORD, REGISTER_PHONE, REGISTER_USERNAME } from '../constants/actionsTypes'
 
 const initState = {
+    userName : {
+        value: '',
+        vState: true,
+        errMsg: '',
+        placehoder: ''
+    },
     mobile : {
         value: '',
         vState: true,
@@ -31,6 +37,10 @@ function register (state = initState, action) {
                 mobile: action.data
             });
         case REGISTER_EMAIL:
+            return Object.assign({}, state, {
+                email: action.data
+            });
+        case REGISTER_USERNAME:
             return Object.assign({}, state, {
                 email: action.data
             });
